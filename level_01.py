@@ -171,34 +171,50 @@
 # test() #这里调用的不在是函数test，而是实例对象test的call方法，会先进行装饰，然后再调用私有属性__func(),__func 其实就是被装饰的函数test。
 
 
-# 动态语言添加属性和方法
-class Person(): #创建一个类
-	def __init__(self, name): #定义初始化信息。
-		self.name = name 
-li = Person('李')  #实例化Person('李'),给变量li
-li.age = 20  #再程序没有停止下，将实例属性age传入。动态语言的特点。
-Person.age = None  #这里使用类名来创建一个属性age给类，默认值是None。Python支持的动态属性添加。
-def eat(self): #定义一个方法，不过这个方法再类之外。
-	print('%s正在吃东西。。'%self.name) 
-import types  # 动态添加方法需要使用tpyes模块。
+# # 动态语言添加属性和方法
+# class Person(): #创建一个类
+# 	def __init__(self, name): #定义初始化信息。
+# 		self.name = name 
+# li = Person('李')  #实例化Person('李'),给变量li
+# li.age = 20  #再程序没有停止下，将实例属性age传入。动态语言的特点。
+# Person.age = None  #这里使用类名来创建一个属性age给类，默认值是None。Python支持的动态属性添加。
+# def eat(self): #定义一个方法，不过这个方法再类之外。
+# 	print('%s正在吃东西。。'%self.name) 
+# import types  #动态添加方法需要使用tpyes模块。
+# li.eat = types.MethodType(eat,li) #使用types.MethodType，将函数名和实例对象传入，进行方法绑定。并且将结果返回给li.eat变量。实则是使用一个和li.eat方法一样的变量名用来调用。
+# li.eat() #调用外部方法eat()方法。
 
-li.eat = types.MethodType(eat,li) #使用types.MethodType，将函数名和实例对象传入，进行方法绑定。并且将结果返回给li.eat变量。实则是使用一个和li.eat方法一样的变量名用来调用。
-li.eat() #调用外部方法eat()方法。
+# @staticmethod  #定义静态方法。
+# def test():  #定义静态方法，静态方法可以不用self参数。
+# 	print('这是一个静态方法。')
+# Person.test = test  #使用类名.方法名 = test的形式来方便记忆和使用，Person.test其实只是一个变量名，没有特殊的含义。
+# Person.test()  #调用test方法。
 
-@staticmethod  #定义静态方法。
-def test():  #定义静态方法，静态方法可以不用self参数。
-	print('这是一个静态方法。')
-Person.test = test  #使用类名.方法名 = test的形式来方便记忆和使用，Person.test其实只是一个变量名，没有特殊的含义。
-Person.test()  #调用test方法。
+# @classmethod  #类方法
+# def test(cls): 
+# 	print('这是一个类方法。')
+# Person.test = test #定义一个类属性等于方法名。
+# Person.test() #调用方法。
 
-@classmethod  #类方法
-def test(cls): 
-	print('这是一个类方法。')
-Person.test = test #定义一个类属性等于方法名。
-Person.test() #调用方法。
+# class test(object): #定义一个类。
+# 	__slots__ = ('name','age') #使用slots来将属性固定，不能进行动态添加修改。
 
-class test(object): #定义一个类。
-	__slots__ = ('name','age') #使用slots来将属性固定，不能进行动态添加修改。
+
+# 元类
+# 创建带有类属性的类
+Test = type('Test', (object,), {'num' : 0})
+
+class Test(object):    # 等价与上边
+    num = 0
+
+# 创建带有方法的类
+def eat(self):
+    print('%s 正在吃饭。'%self.name)
+Person = type('Person', (object, ), {'eat':eat, 'name':None})   #两个属性，eat的值是函数eat的引用
+p = Person()
+p.name = 'Tom'
+p.eat()
+
 
 
 

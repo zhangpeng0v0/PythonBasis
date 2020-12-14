@@ -204,7 +204,11 @@ class test(object): #定义一个类。
 	__slots__ = ('name','age') #使用slots来将属性固定，不能进行动态添加修改。
 
 
-
+# 元类
+# 创建带有类属性的类
+Test = type('Test',(object,),{'num':0}  #元类是只使用type创建的类，使用type会有3个参数，第一个是类名，第二个小括号内是父类名，需要使用元组。第三个字典中是类属性，使用type能够快速的动态创建一个类。
+class Test(object):  #创建一个类，等价于上边
+	num = 0
 
 
 
