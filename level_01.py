@@ -200,20 +200,207 @@
 # 	__slots__ = ('name','age') #使用slots来将属性固定，不能进行动态添加修改。
 
 
-# 元类
-# 创建带有类属性的类
-Test = type('Test', (object,), {'num' : 0})
+# # 元类
+# # 创建带有类属性的类
+# Test = type('Test', (object,), {'num' : 0})
 
-class Test(object):    # 等价与上边
-    num = 0
+# class Test(object):  # 等价于上边
+#     num = 0
 
-# 创建带有方法的类
-def eat(self):
-    print('%s 正在吃饭。'%self.name)
-Person = type('Person', (object, ), {'eat':eat, 'name':None})   #两个属性，eat的值是函数eat的引用
-p = Person()
-p.name = 'Tom'
-p.eat()
+# # 创建带有方法的类
+# def eat(self):
+#     print('%s 正在吃饭。'%self.name)
+# Person = type('Person', (object, ), {'eat':eat, 'name':None})   #两个属性，eat的值是函数eat的引用
+# p = Person()
+# p.name = 'Tom'
+# p.eat()
+
+# import	os
+# pid = os.fork() #这里将会创建一个子进程，返回值会是子进程PID值。
+# print('父子进程都会输出。') #这里没有判断语句，将会运行两次，一次是父进程，一次是子进程。
+# if pid > 0: #判断，父进程的返回值会大于0。
+# 	print('子进程的PID是%d,父进程的PID是%d'%(os.getpid(),os.getppid())) #getpid的获取当前进程的pid,如果子进程getpid的时候，会得到子进程的值，再子进程使用getppid的时候能够获取到父进程的pid。
+# else: #子进程的返回值则会永远是0
+# 	print('父进程的PID是%d'%os.getpid()) #当父进程使用getpid的时候获得的是父进程的pid。
+
+
+# import os
+# import random
+# import time
+# from multiprocessing import Process, Queue
+
+# def write(q):
+#     for v in range(10):
+#         print('Put %s to Queue'%v)
+#         q.put(v)
+#         time.sleep(1)
+
+# def read(q):
+#     while True:
+#         if not q.empty():
+#             v = q.get(True)
+#             print('Get %s for Queue'%v)
+#             time.sleep(1)
+#         else:
+#             break
+
+# if __name__ == "__main__":
+#     q = Queue()
+#     pw = Process(target = write, args = (q,))
+#     pr = Process(target=read,args=(q,)) 
+#     pw.start()
+#     pr.start()
+#     pw.join()
+#     pr.join()
+#     print('Over')
+
+
+# import os
+# import random
+# import time
+# # Pool的Queue用法
+# from multiprocessing import Manager, Pool  # 这里注意导入的是Manager和Pool
+
+# def write(q):
+#     for v in range(10):
+#         print('Put %s to Queue'%v)
+#         q.put(v)
+#         time.sleep(1)
+# def read(q):
+#     while True:
+#         if not q.empty():
+#             v = q.get(True)
+#             print('Get %s from Queue'%v)
+#             time.sleep(1)
+#         else:
+#             break
+
+# if __name__ == '__main__':
+#     q = Manager().Queue() #这里实例化的时候是使用Manager的Queue
+#     p = Pool()
+#     p.apply_async(write,(q,)) #将任务加入Pool的进程池，注意这里的参数于Process不同。
+#     p.apply_async(read,(q,)) #将任务加入Pool的进程池，注意这里的参数于Process不同。
+#     p.close() #关闭进程池，不再接收进程。
+#     p.join() #子进程完毕，运行以下的主进程。
+#     print('Over')
+
+
+# import time
+# # 线程
+# from threading import Thread  # 导入Thread线程类。
+
+# num = 0 #定义全局变量
+# def work(): #定义函数内容
+#     global num 
+#     for i in range(1000000):
+#         num += 1
+#     print('work的num是%d'%num)
+
+# def works(): #定义函数
+#     global num
+#     for i in range(1000000):
+#         num += 1
+#     print('works的num是%d'%num)
+
+# t = Thread(target=work) #创建第一个线程内置的self.name属性为Thread-1,并指向work
+# tt = Thread(target=works) #创建第二个线程内置的self.name属性为Thread-2,并指向works
+# t.start() #开始执行
+# tt.start() #开始执行
+# time.sleep(1) #主线程休息一秒
+# print('最后的num值是%d'%num) #输出最后的结果。
+
+
+# 互斥锁
+# from threading import Lock, Thread
+
+# num = 0
+# def work():
+#     global num
+#     l.acquire()    #上锁方法
+#     for i in range(1000000):
+#         num += 1
+#     print('wor的num是%d'%num)
+#     l.release()  # 调用互斥锁解锁方法
+
+# def works():
+#     global num
+#     l.acquire()
+#     for i in range(1000000):
+#         num+=1
+#     print('works的num是%d'%num)
+#     l.release()
+
+# l = Lock()
+# t = Thread(target=work)
+# tt = Thread(target=works)
+# t.start()
+# tt.start()
+# print('最后的num值是%d'%num)
+
+
+# # 同步、异步
+# import threading
+# import time
+
+# class MyThread(threading.Thread):
+#     def run(self):
+#         global num 
+#         time.sleep(1)
+
+#         if mutex.acquire(1):  
+#             num = num+1
+#             msg = self.name+' set num to '+str(num)
+#             print(msg)
+#             mutex.release()
+
+# num = 0
+# mutex = threading.Lock()
+# def test():
+#     for i in range(5):
+#         t = MyThread()
+#         t.start()
+
+# if __name__ == '__main__':
+#     test()
+
+
+# threadlocal
+import threading
+
+l = threading.local()
+def work(name):
+    l.name = name
+    works()
+
+def works():
+    name = l.name
+    print('hello, %s,线程的name是%s'%(name, threading.current_thread().name))
+
+t1 = threading.Thread(target=work, args=('小李',))
+t2 = threading.Thread(target=work, args=('小王',))
+
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -210,6 +210,381 @@ Test = type('Test',(object,),{'num':0}  #元类是只使用type创建的类，�
 class Test(object):  #创建一个类，等价于上边
 	num = 0
 
+#创建带有方法的类
+def eat(self):  #定义一个函数，self作为第一个参数。
+	print ('%s正在吃饭。。'%self.name)
+Person = type('Person',(object,), {'eat':eat,'name':None}  #使用type创建一个类，但是有两个属性，一个是eat,一个是name,但是eat的值是函数eat的引用。
+p = Person()  #实例化
+p.name = 'Tom'  #类属性赋值
+p.eat()  #调用eat()方法。
+
+
+#  内建属性
+__init__   # 构造初始化函数,__new__之后运行
+__new__   # 创建实例所需的属性
+__class__   # 实例所在的类，实例.__class__
+__str__   # 实例的字符串表示，可读性高
+__repr__   # 实例的字符串表示，准确性高
+__del__   # 删除实例引用
+__dict__   # 实力自定义属性，vars(实例.__dict__)
+__doc__   # 类文档，help(类或者实例)
+__bases__  # 当前类的所有父类
+__getattribute__  # 属性访问拦截器。
+
+# 内建方法
+range(start,stop,[,step])  # 生成器
+map(function, iterable, ...)  #  map() 会根据提供的函数对指定序列做映射
+filter(function, iterable)  #filter() 函数用于过滤序列，过滤掉不符合的元素，返回由符合条件元素组成的新列表。
+reduce(function, iterable[, initializer]) #reduce() 函数会对参数序列中元素进行累积。
+sorted(iterable[, cmp[, key[, reverse]]]) #sorted() 函数对所有可迭代的对象进行排序操作。
+
+# sort 与 sorted 区别：
+sort 是应用在 list 上的方法，sorted 可以对所有可迭代的对象进行排序操作。
+list  的 sort 方法返回的是对已经存在的列表进行操作，而内建函数 sorted 方法返回的是一个新的 list，而不是在原来的基础上进行的操作。
+
+
+# PDB调试
+1.python -m pdb xxx.py  
+# 在命令行输入以上命令，进入pdb调试模式。XXX.py表示需要打开的文件。
+
+# 第二种方式，当程序在运行中调试。
+2.import pdb
+pdb.run('func(*args)') 
+
+# 第三种方法，当程序运行到这行代码时，就会自动运行。
+3.pdb.set_trace()
+l(list)  # 显示全部代码
+n(next)  # 向下执行一行代码
+c(contiune)  # 执行余下的代码
+b(break) 10 # 设置断点，b 10表示将断点设置到第10行。clear 1,删除第一个断点
+p(print) a, b  # 打印变量的值
+a(args)  # 打印全部的形参数据
+s(step)  # 进入到一个函数
+r(return)  # 快速执行到函数的最后一行
+
+
+# 进程和线程
+# 进程
+import	os
+pid = os.fork() #这里将会创建一个子进程，返回值会是子进程PID值。
+print('父子进程都会输出。') #这里没有判断语句，将会运行两次，一次是父进程，一次是子进程。
+if pid > 0: #判断，父进程的返回值会大于0。
+	print('子进程的PID是%d,父进程的PID是%d'%(os.getpid(),os.getppid())) #getpid的获取当前进程的pid,如果子进程getpid的时候，会得到子进程的值，再子进程使用getppid的时候能够获取到父进程的pid。
+else: #子进程的返回值则会永远是0
+	print('父进程的PID是%d'%os.getpid()) #当父进程使用getpid的时候获得的是父进程的pid。
+
+# 注意：进程值PID是不能重复的，类似于端口。系统会为每个进程会分配不同的PID进行区分不同的软件进程。并且父子进程会独立运行，互不干扰。而且父子进程的调用需要系统来调度，没有固定性。
+
+import os
+pid = os.fork() #创建子进程，接收pid的返回值。
+if pid > 0: #判断是子进程还是父进程。
+	print('父进程') #当pid的返回值是0的时候，会运行父进程
+else:
+	print('子进程') #否则就是子进程
+pid =os.fork() #让之前的父子进程再次创建各自的子进程
+if pid > 0: #判断父子进程
+	print('父进程的子进程') #这里会运行2次父进程
+else:
+	print('子进程的子进程') #这里也会运行两次子进程
+
+# windons中的fork()-Process
+from multiprocessing import Process #导入模块类，这是一个类
+import time
+def test(): #定义一个函数
+    while True:
+        print('-1-')
+        time.sleep(1)
+p = Process(target=test) #创建一个实例，就是一个新进程，并且执行的代码就是test()函数
+p.start() #调用start方法让子进程开始运行。
+p.join(10) #join表示延时时间，也就是等待子进程的时间，当10秒过了以后，则会运行主进程。
+while True: #这里是主进程。
+    print('-2-')
+    time.sleep(1)
+
+# 注意：Process需要自己创建进程，以及调用开始进程，fork则是全自动运行。后期最好以Process为主，可实现跨平台运行。还有最主要的一点是Process的主进程会等待子进程。
+
+# Process 实例
+from multiprocessing import Process
+import time
+
+class Process_class(Process): #创建一个Process的子类。
+    def run(self): #重写run方法，当调用start方法时，则会默认调用run方法，所以不用再填写target参数。
+        while True:
+            print('--1--')
+            time.sleep(1)
+p = Process_class() #实例化一个子进程。
+p.start() #运行子进程
+p.join(5) #这里将会等待子进程单独运行5秒。
+while True: #主进程，当join等待结束收，则会父子进程一起运行。但是如果当父进程运行完，子进程还没有结束，那么父进程会继续等子进程。
+    print('--main--')
+    time.sleep(1) 
+
+# 进程池Pool
+from multiprocessing import Pool  #导入Pool模块类
+import os, time
+def work(num):  #创建一个进程的工作函数。
+    for i in range(2):  #表示每次工作需要执行2次。
+        print('进程的pid是%d,进程值是%d'%(os.getpid(),num))  #输出两次
+        time.sleep(1)
+
+p = Pool(2) #实例化对象，参数2表示创建2个子进程，就是说每次只能执行2个进程。
+
+for i in range(6): 
+    print('--%d--'%i)
+    p.apply_async(work, (i,)) #向实例对象添加6次任务，就是6个进程，但是实例对象的进程池只有2个，需要每次执行2个进程，当2个进程执行完以后则会再次执行下面2个。
+
+p.close() #关闭进程池，不再接收进程任务。
+p.join() #当子进程工作结束后，则会运行主进程。
+
+# Queue队列
+# Process的Queue用法
+from multiprocessing import Process,Queue  #导入Process和Queue
+import os,time,random
+
+def write(q):  #定义函数,接收Queue的实例参数
+    for v in range(10):
+        print('Put %s to Queue'%v)
+        q.put(v)  #添加数据到Queue
+        time.sleep(1)
+def read(q): #定义函数，接收Queue的实例参数
+    while True:
+        if not q.empty(): #判断，如果Queue不为空则进行数据取出。
+            v = q.get(True) #取出Queue中的数据，并返回保存。
+            print('Get %s from Queue'%v)
+            time.sleep(1)
+        else: #如果Queue内没有数据则退出。
+            break
+
+if __name__ == '__main__':
+    q = Queue() #实例化Queue括号内可选填，输入数字表示有多少个存储单位。以堵塞方式运行。必须等里边有空余位置时，才能放入数据，或者只能等里边有数据时才能取出数据，取不出数据，或者存不进数据的时候则会一直在等待状态。
+    pw = Process(target=write,args=(q,)) #实例化子进程pw,用来执行write函数，注意这里的函数不带括号，只是传递引用，参数需要使用args参数以元组的方式进行接收。
+    pr = Process(target=read,args=(q,)) #实例化子进程pr,用来执行read函数，注意这里的函数不带括号，只是传递引用，参数需要使用args参数以元组的方式进行接收。
+    pw.start() #开始执行pw。
+    pr.start() #开始执行pr。
+    pw.join() #等待pw结束
+    pr.join() #等待pr结束
+    print('Over')  #主进程结束
+
+#Poolde Queue用法
+from multiprocessing import Manager,Pool #这里注意导入的是Manager和Pool
+import os,time,random
+
+def write(q):
+    for v in range(10):
+        print('Put %s to Queue'%v)
+        q.put(v)
+        time.sleep(1)
+def read(q):
+    while True:
+        if not q.empty():
+            v = q.get(True)
+            print('Get %s from Queue'%v)
+            time.sleep(1)
+        else:
+            break
+
+if __name__ == '__main__':
+    q = Manager().Queue() #这里实例化的时候是使用Manager的Queue
+    p = Pool()
+    p.apply_async(write,(q,)) #将任务加入Pool的进程池，注意这里的参数于Process不同。
+    p.apply_async(read,(q,)) #将任务加入Pool的进程池，注意这里的参数于Process不同。
+    p.close() #关闭进程池，不再接收进程。
+    p.join() #子进程完毕，运行以下的主进程。
+    print('Over')
+
+# 线程
+from threading import Thread #导入Thread线程类。
+import time
+
+num = 0 #定义全局变量
+
+def work(): #定义函数内容
+    global num 
+    for i in range(1000000):
+        num += 1
+    print('work的num是%d'%num)
+
+def works(): #定义函数
+    global num
+    for i in range(1000000):
+        num += 1
+    print('works的num是%d'%num)
+
+t = Thread(target=work) #创建第一个线程内置的self.name属性为Thread-1,并指向work
+tt = Thread(target=works) #创建第二个线程内置的self.name属性为Thread-2,并指向works
+t.start() #开始执行
+tt.start() #开始执行
+time.sleep(1) #主线程休息一秒
+print('最后的num值是%d'%num) #输出最后的结果。
+
+# 注意：线程中的变量数据是可以共享的，进程与线程的区别在于，父子进程是两个单独的个体，子进程类似于直接拷贝的一份父进程的代码独立运行，相当于两个文件。线程则是再主进程的内部分裂运行。举例子来说一个工厂需要做100万件衣服，但是工期太紧，自己做太慢，老板现在有两个选择，一个是雇佣另外一个同样规模的工厂一起来做，两个工厂一起做——进程，另外一个选择就是在自己的工厂内大批量的招募工人用来赶工——线程。总得来说线程的消耗成本会比进程低很多。
+
+# 互斥锁
+from threading import Thread,Lock #导入互斥锁Lock
+
+num = 0
+def work():
+    global num
+    l.acquire() #这里表示调用互斥锁上锁方法，如果work函数先运行l.acquire的话，那么后边的程序就不能再修改和使用变量num。直到将其解锁后才能使用。
+    for i in range(1000000):
+        num += 1
+    print('work的num是%d'%num)
+    l.release() #这里表示调用互斥锁解锁方法。
+
+def works():
+    global num
+    l.acquire() #这里表示调用互斥锁上锁方法。
+    for i in range(1000000):
+        num += 1
+    print('works的num是%d'%num)
+    l.release() #这里表示调用互斥锁解锁方法。
+
+l = Lock() #实例化互斥锁，互斥锁是为了保护子线程不争抢数据而使用的一个类。
+t = Thread(target=work)
+tt = Thread(target=works)
+t.start()
+tt.start()
+print('最后的num值是%d'%num) 
+# 输出最后的结果，如果实验过的可能会发现这个结果并不是2000000，为什么呢？
+# 这里需要明白，主线程和子线程是同时进行的，因为创建子进程在前，最后输出再后，所以当最后线程输出的时候，子线程还在运行，也就是说当子线程的加法运算加到95222的时候你的
+# 主进程刚好运行到最后的输出语句，所以就把95222拿过来进行输出。你也可以试试将最后的输出语句放到实例化的前边，看看结果是不是0，因为子线程还没有开始工作，所以并没有进行加法运算。
+
+# 注意：因为线程的数据是共享数据，不用Queue就能实现，所以也会存在一些弊端，因为线程是在进程间独立运行的，所以共享数据会有一定的延时性和不准确性，举例家里有10个馒头，2个孩子，第一个孩子拿走一个会记得还剩下9个，第二个孩子去拿的时候会记得还剩下8个，但是当第一个孩子再去拿的时候会发现只剩下7个了，但是之前明明还剩下9个，这样就会出现问题。互斥锁的作用就是再厨房装上一把锁，当第一个孩子饿的时候就进去吃馒头，将门反锁，这样第二个孩子就吃不到在门口等着，当第一个吃饱的时候第二个再进去，也把门锁上。这样一个一个的来避免冲突。
+
+# 同步、异步
+import threading
+import time
+
+class MyThread(threading.Thread):
+    def run(self):
+        global num 
+        time.sleep(1)
+
+        if mutex.acquire(1):  
+            num = num+1
+            msg = self.name+' set num to '+str(num)
+            print(msg)
+            mutex.release()
+num = 0
+mutex = threading.Lock()
+def test():
+    for i in range(5):
+        t = MyThread()
+        t.start()
+if __name__ == '__main__':
+    test()
+
+Thread-3 set num to 1
+Thread-4 set num to 2
+Thread-5 set num to 3
+Thread-2 set num to 4
+Thread-1 set num to 5
+
+# 注意：这里就是一个简单的同步，使用互斥锁来实现，因为每个线程在创建运行的时候都是各自做各自的，如果没有互斥锁来约束步调，那么结果是1,2,3,4,5的概率是未知数，但是加上了互斥锁以后，就会对线程的运行顺序进行排队，达到预期的结果。而异步则是各个线程独立运行，谁先做完就休息，不用等待。
+
+# threadlocal
+import threading  #导入模块
+
+l = threading.local() #实例化local，注意这个local和Lock互斥锁的名称不同。
+
+def work(name): #创建函数
+    l.name = name #将参数name传递给local实例对象的name属性。注意：这里的l.name是创建的对象属性。
+    works() #调用work函数
+
+def works(): #创建函数
+    name = l.name
+    print('hello,%s,线程的name是%s'%(name,threading.current_thread().name))
+
+t1 = threading.Thread(target=work,args=('小李',)) #实例化线程对象，并调用work,参数name是小李。
+t2 = threading.Thread(target=work,args=('小王',))#实例化线程对象，并调用work,参数name是小王。
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+
+# 注意：threadlocal是比较方便的共享数据处理办法，他的内部类似于一个字典，Thread.name作为Key，对应的属性作为Value，当Thread-1储存和取值的时候，对应的是它的值，从而避免多个线程对共有数据造成错误和丢失。
+
+
+# 网络编程
+
+# Tcp/Ip协议
+# 早期的计算机网络，都是由各厂商自己规定一套协议，IBM、Apple和Microsoft都有各自的网络协议，互不兼容为了把全世界的所有不同类型的计算机都连接起来，就必须规定一套全球通用的协议，为了实现互联网这个目标，互联网协议簇（Internet ProtocolSuite）就是通用协议标准。
+
+# 因为互联网协议包含了上百种协议标准，但是最重要的两个协议是TCP和IP协议，所以，大家把互联网的协议简称TCP/IP协议
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
