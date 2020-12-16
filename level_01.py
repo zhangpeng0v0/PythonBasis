@@ -384,34 +384,34 @@
 # t1.join()
 # t2.join()
 
-# udp-套接字
-from socket import *
-from threading import *
+# # udp-套接字
+# from socket import *
+# from threading import *
 
-udp = socket(AF_INET, SOCK_DGRAM)
-udp.bind(('', 8080))
-sendip = input('请输入接收方的IP：')
-sendport = int(input('请输入接收放的端口：'))
-def sendinfo():
-    while True:
-        senddata = input('请输入发送的内容：')
-        udp.sendto(senddata.encode('utf-8'), (sendip, sendport))
+# udp = socket(AF_INET, SOCK_DGRAM)
+# udp.bind(('', 8080))
+# sendip = input('请输入接收方的IP：')
+# sendport = int(input('请输入接收放的端口：'))
+# def sendinfo():
+#     while True:
+#         senddata = input('请输入发送的内容：')
+#         udp.sendto(senddata.encode('utf-8'), (sendip, sendport))
 
-def receiveinfo():
-    while True:
-        recvdata =  udp.recvfrom(1024)
-        print(recvdata[1], recvdata[0].decode('utf-8'))
+# def receiveinfo():
+#     while True:
+#         recvdata =  udp.recvfrom(1024)
+#         print(recvdata[1], recvdata[0].decode('utf-8'))
 
-def main():
-    ts = Thread(target=sendinfo)
-    tr = Thread(target=receiveinfo)
-    ts.start()
-    tr.start()
-    ts.join()
-    tr.join()
+# def main():
+#     ts = Thread(target=sendinfo)
+#     tr = Thread(target=receiveinfo)
+#     ts.start()
+#     tr.start()
+#     ts.join()
+#     tr.join()
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
 
 
