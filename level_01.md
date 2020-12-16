@@ -1,11 +1,12 @@
 # Python基础
 
+
+### 关键字 is 和 == 的区别
+is 判断是否是同一个ID， == 判断内容是否一致
+
+
+### 深拷贝和浅拷贝
 ```python
-# 关键字 is 和 == 的区别
-# is 判断是否是同一个ID， == 判断内容是否一致
-
-
-# 深拷贝和浅拷贝
 import copy
 
 a = [1, 2, 3, 4,]
@@ -14,9 +15,10 @@ c = copy.deepcopy(a)   # 深拷贝，c单独开辟一个id，用来存储和a一
 d = a[:] # 这样也是深拷贝
 e = copy.copy(a)   # 当拷贝内容是可变类型时，那么就会进行深拷贝，如果是不可变类型时，那么就会进行浅拷贝
 # 注意：深拷贝值得是复制内容。单独开辟一个内存，浅拷贝值得是两个变量同时指向一个内存ID。
+```
 
-
-# 私有化和Property
+ ### 私有化和Property
+```python
 class Test(object):
         def __init__(self):
                 self.__num = 100
@@ -39,17 +41,19 @@ print(t.num)  # 输出类属性，并会自己检测使用get方法进行输出
 # 注意：num前后没有下划线的是公有方法，_num前边有一个下划线的为私有方法或属性，子类无法继承，前边有两个下划线的
 #一般是为了避免于子类属性或方法名冲突，无法在外部直接访问。前后都有双下划线的为系统方法或属性。后边单个下划线的可以
 #避免与系统关键词冲突。
+```
 
-
-# 列表生成式
+### 列表生成式
+```python
 range(1, 100, 5)  # 第一个参数表示开始位，第二个参数表示结束位(不含)，第三个参数表示步长
 a = [i for i in range(1, 10)]   # 列表生成式表示返回i的值，每次返回9次，每次返回i的值
 a = [2 for i in range(1, 10)]  # 这里会返回2，并且返回9次
 a = [i for i in range(10) if i%2==0 ]  # 表示在生成式内部加入if判断，当 i 除以 2 的余数等于0的时候将数值返回
 a = [(i , j) for i in range(5) for j in range(5)]   # 表示将 i 和 j 的值以元祖为元素的形式返回，当 i 循环一次的时候 j 循环5次
+```
 
-
-# 生成器
+### 生成器
+```python
 a = (i for i in range(1, 10))  # 将列表生成式外部中括号改为小括号，就能将生成式转化为生成器
 next(a), a.__next__()  # 生成器的取值方式只能使用next的方法
 def num():
@@ -64,9 +68,11 @@ a = num()  # 将生成器赋值给变量a
 for n in a:     # 生成器可以使用for循环使用，并且不会出错
         print(n)
 # 注意：生成器占用内存小，在使用的时候取值，降低CPU和内存空间，提高效率。并且一般都使用for循环进行取值
+```
 
+### 迭代器
+```Python
 
-# 迭代器
 for i in '', [], (), {}, {:}
 # 可以for循环的对象是可迭代对象
  a = (x for i in range(100))
@@ -79,9 +85,11 @@ b = iter(a)  # 使用iter()方法可以将可迭代对象旋转为可迭代对�
 # 注意：生成器是可迭代对象，迭代器不一定是生成器。并且迭代器无法回取，只能向前取值
 # 注意：一个对象具有iter方法的才能称为可迭代对象，使用yield生成的迭代器函数，也有iter方法。凡是没有iter方法的对象不是可迭代对象，
 #      凡是没有__next__()方法的不是生成器。(这里的方法都是魔法方法，是内置方法，可以使用dir()查看)
+```
 
+### 闭包
+```Python
 
-# 闭包
 def num(num):
         def num_in(nim_in):
                 return num + num_in  # 返回两个参数的和
@@ -90,9 +98,11 @@ a = num(100)  # 将参数为100的函数num接收，并赋值给a，只不过这
               # 注意这里接收的不光是函数本身，还有已经传递的参数
 b = a(100)    # 调用函数a，即num_in，并传递一个参数100，返回值给b
 # 注意：当一个函数定义在另一个函数内，且使用到了外部函数的参数，整个代码块称为闭包，当外部参数确定时，内部函数参数可以反复调用
+```
 
+### 装饰器
+```Python
 
-# 装饰器
 # 装饰没有参数的函数
 def function(func):  # 定义了一个闭包
         def fun_in():  # 闭包内的函数
@@ -110,7 +120,9 @@ test()  # 这里再次调用test()的时候，其实是将会调用闭包内的�
 def test():
         print('无参函数的测试')
 test()  # 这里再次调用函数是，将会产生修改后的效果
+```
 
+```Python
 # 装饰带有参数的函数
 def function(func):   # 定义了一个闭包
         def func_in(*args, **kwargs):   # 闭包内的函数，因为装饰器运行的实则是闭包内的函数，所以这里需要有形参用来接受原函数的参数
@@ -123,7 +135,9 @@ def test():
         print('无参函数的测试')
 
 test(5, 6)   # 这里再次调用test()的时候，其实是将会调用闭包内的函数fun_in()，所以将会起到装饰器修改的作用，最后会再次调用原函数test()
+```
 
+```Python
 # 装饰带有返回值的函数
 def function(func):   # 定义闭包
         def fun_in(*args, **kwargs):   # 闭包内的函数，因为装饰器运行的实则是闭包内的函数，所以这里将需要有形参用来接收原函数的参数。
@@ -135,7 +149,9 @@ def function(func):   # 定义闭包
 @function
 def test(a,b): #定义一个函数
 	return a+b #返回实参的和
+```
 
+```python
 # 通用装饰器
 def function(func): #定义了一个闭包
 	def func_in(*args,**kwargs): 	#闭包内的函数，因为装饰器运行的实则是闭包内的函数，所以这里将需要有形参用来接收原函数的参数。
@@ -143,7 +159,9 @@ def function(func): #定义了一个闭包
 		num = func(*args,**kwargs) 	#调用实参函数，并传入一致的实参，并且用变量来接收原函数的返回值，
 		return num 	#将接受到的返回值再次返回到新的test()函数中。
 	return func_in
+```
 
+```python
 # 带有参数的装饰器
 def func(*args,**kwags):
 	def function(func): #定义了一个闭包
@@ -172,9 +190,10 @@ t() #调用类，将会调用call方法。
 def test():
 	print('被装饰的函数')
 test() #这里调用的不在是函数test，而是实例对象test的call方法，会先进行装饰，然后再调用私有属性__func(),__func 其实就是被装饰的函数test。
+```
 
-
-# 动态语言添加属性和方法
+### 动态语言添加属性和方法
+```python
 class Person(): #创建一个类
 	def __init__(self, name): #定义初始化信息。
 		self.name = name 
@@ -202,9 +221,10 @@ Person.test() #调用方法。
 
 class test(object): #定义一个类。
 	__slots__ = ('name','age') #使用slots来将属性固定，不能进行动态添加修改。
+```
 
-
-# 元类
+### 元类
+```python
 # 创建带有类属性的类
 Test = type('Test',(object,),{'num':0}  #元类是只使用type创建的类，使用type会有3个参数，第一个是类名，第二个小括号内是父类名，需要使用元组。第三个字典中是类属性，使用type能够快速的动态创建一个类。
 class Test(object):  #创建一个类，等价于上边
@@ -217,9 +237,10 @@ Person = type('Person',(object,), {'eat':eat,'name':None}  #使用type创建一�
 p = Person()  #实例化
 p.name = 'Tom'  #类属性赋值
 p.eat()  #调用eat()方法。
+```
 
-
-#  内建属性
+ ### 内建属性
+```Python
 __init__   # 构造初始化函数,__new__之后运行
 __new__   # 创建实例所需的属性
 __class__   # 实例所在的类，实例.__class__
@@ -231,7 +252,10 @@ __doc__   # 类文档，help(类或者实例)
 __bases__  # 当前类的所有父类
 __getattribute__  # 属性访问拦截器。
 
-# 内建方法
+```
+
+### 内建方法
+```Python
 range(start,stop,[,step])  # 生成器
 map(function, iterable, ...)  #  map() 会根据提供的函数对指定序列做映射
 filter(function, iterable)  #filter() 函数用于过滤序列，过滤掉不符合的元素，返回由符合条件元素组成的新列表。
@@ -241,9 +265,10 @@ sorted(iterable[, cmp[, key[, reverse]]]) #sorted() 函数对所有可迭代的�
 # sort 与 sorted 区别：
 sort 是应用在 list 上的方法，sorted 可以对所有可迭代的对象进行排序操作。
 list  的 sort 方法返回的是对已经存在的列表进行操作，而内建函数 sorted 方法返回的是一个新的 list，而不是在原来的基础上进行的操作。
+```
 
-
-# PDB调试
+### PDB调试
+```Python
 1.python -m pdb xxx.py  
 # 在命令行输入以上命令，进入pdb调试模式。XXX.py表示需要打开的文件。
 
@@ -261,10 +286,12 @@ p(print) a, b  # 打印变量的值
 a(args)  # 打印全部的形参数据
 s(step)  # 进入到一个函数
 r(return)  # 快速执行到函数的最后一行
+```
 
+### 进程和线程
 
-# 进程和线程
-# 进程
+### 进程
+```Python
 import	os
 pid = os.fork() #这里将会创建一个子进程，返回值会是子进程PID值。
 print('父子进程都会输出。') #这里没有判断语句，将会运行两次，一次是父进程，一次是子进程。
@@ -286,7 +313,9 @@ if pid > 0: #判断父子进程
 	print('父进程的子进程') #这里会运行2次父进程
 else:
 	print('子进程的子进程') #这里也会运行两次子进程
+```
 
+```Python
 # windons中的fork()-Process
 from multiprocessing import Process #导入模块类，这是一个类
 import time
@@ -303,7 +332,10 @@ while True: #这里是主进程。
 
 # 注意：Process需要自己创建进程，以及调用开始进程，fork则是全自动运行。后期最好以Process为主，可实现跨平台运行。还有最主要的一点是Process的主进程会等待子进程。
 
-# Process 实例
+```
+
+### Process 实例
+```Python
 from multiprocessing import Process
 import time
 
@@ -319,7 +351,10 @@ while True: #主进程，当join等待结束收，则会父子进程一起运行
     print('--main--')
     time.sleep(1) 
 
-# 进程池Pool
+```
+
+### 进程池Pool
+```Python
 from multiprocessing import Pool  #导入Pool模块类
 import os, time
 def work(num):  #创建一个进程的工作函数。
@@ -336,7 +371,10 @@ for i in range(6):
 p.close() #关闭进程池，不再接收进程任务。
 p.join() #当子进程工作结束后，则会运行主进程。
 
-# Queue队列
+```
+
+### Queue队列
+```Python
 # Process的Queue用法
 from multiprocessing import Process,Queue  #导入Process和Queue
 import os,time,random
@@ -364,7 +402,9 @@ if __name__ == '__main__':
     pw.join() #等待pw结束
     pr.join() #等待pr结束
     print('Over')  #主进程结束
+```
 
+```Python
 #Poolde Queue用法
 from multiprocessing import Manager,Pool #这里注意导入的是Manager和Pool
 import os,time,random
@@ -392,7 +432,10 @@ if __name__ == '__main__':
     p.join() #子进程完毕，运行以下的主进程。
     print('Over')
 
-# 线程
+```
+
+### 线程
+```Python
 from threading import Thread #导入Thread线程类。
 import time
 
@@ -418,8 +461,10 @@ time.sleep(1) #主线程休息一秒
 print('最后的num值是%d'%num) #输出最后的结果。
 
 # 注意：线程中的变量数据是可以共享的，进程与线程的区别在于，父子进程是两个单独的个体，子进程类似于直接拷贝的一份父进程的代码独立运行，相当于两个文件。线程则是再主进程的内部分裂运行。举例子来说一个工厂需要做100万件衣服，但是工期太紧，自己做太慢，老板现在有两个选择，一个是雇佣另外一个同样规模的工厂一起来做，两个工厂一起做——进程，另外一个选择就是在自己的工厂内大批量的招募工人用来赶工——线程。总得来说线程的消耗成本会比进程低很多。
+```
 
-# 互斥锁
+### 互斥锁
+```python
 from threading import Thread,Lock #导入互斥锁Lock
 
 num = 0
@@ -451,7 +496,10 @@ print('最后的num值是%d'%num)
 
 # 注意：因为线程的数据是共享数据，不用Queue就能实现，所以也会存在一些弊端，因为线程是在进程间独立运行的，所以共享数据会有一定的延时性和不准确性，举例家里有10个馒头，2个孩子，第一个孩子拿走一个会记得还剩下9个，第二个孩子去拿的时候会记得还剩下8个，但是当第一个孩子再去拿的时候会发现只剩下7个了，但是之前明明还剩下9个，这样就会出现问题。互斥锁的作用就是再厨房装上一把锁，当第一个孩子饿的时候就进去吃馒头，将门反锁，这样第二个孩子就吃不到在门口等着，当第一个吃饱的时候第二个再进去，也把门锁上。这样一个一个的来避免冲突。
 
-# 同步、异步
+```
+
+### 同步、异步
+```Python
 import threading
 import time
 
@@ -481,8 +529,10 @@ Thread-2 set num to 4
 Thread-1 set num to 5
 
 # 注意：这里就是一个简单的同步，使用互斥锁来实现，因为每个线程在创建运行的时候都是各自做各自的，如果没有互斥锁来约束步调，那么结果是1,2,3,4,5的概率是未知数，但是加上了互斥锁以后，就会对线程的运行顺序进行排队，达到预期的结果。而异步则是各个线程独立运行，谁先做完就休息，不用等待。
+```
 
-# threadlocal
+### threadlocal
+```Python
 import threading  #导入模块
 
 l = threading.local() #实例化local，注意这个local和Lock互斥锁的名称不同。
@@ -503,22 +553,80 @@ t1.join()
 t2.join()
 
 # 注意：threadlocal是比较方便的共享数据处理办法，他的内部类似于一个字典，Thread.name作为Key，对应的属性作为Value，当Thread-1储存和取值的时候，对应的是它的值，从而避免多个线程对共有数据造成错误和丢失。
-
-
-# 网络编程
-
-# Tcp/Ip协议
-# 早期的计算机网络，都是由各厂商自己规定一套协议，IBM、Apple和Microsoft都有各自的网络协议，互不兼容为了把全世界的所有不同类型的计算机都连接起来，就必须规定一套全球通用的协议，为了实现互联网这个目标，互联网协议簇（Internet ProtocolSuite）就是通用协议标准。
-
-# 因为互联网协议包含了上百种协议标准，但是最重要的两个协议是TCP和IP协议，所以，大家把互联网的协议简称TCP/IP协议
-
 ```
+
+ ### 网络编程
+
+#### Tcp/Ip协议
+
+早期的计算机网络，都是由各厂商自己规定一套协议，IBM、Apple和Microsoft都有各自的网络协议，互不兼容为了把全世界的所有不同类型的计算机都连接起来，就必须规定一套全球通用的协议，为了实现互联网这个目标，互联网协议簇（Internet ProtocolSuite）就是通用协议标准。
+
+因为互联网协议包含了上百种协议标准，但是最重要的两个协议是TCP和IP协议，所以，大家把互联网的协议简称TCP/IP协议
+
+
 ![TCP\IP协议](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/TCP%5CIP%E5%8D%8F%E8%AE%AE.png)
 
 ![TCP\IP模型与OSI模型对比01](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/TCP%5CIP%E6%A8%A1%E5%9E%8B%E4%B8%8EOSI%E6%A8%A1%E5%9E%8B%E5%AF%B9%E6%AF%9401.png)
 
 ![TCP\IP模型与OSI模型对比02](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/TCP%5CIP%E6%A8%A1%E5%9E%8B%E4%B8%8EOSI%E6%A8%A1%E5%9E%8B%E5%AF%B9%E6%AF%9402.png)
 
+
+
+### 端口
+#### 知名端口
+        知名端口是总所周知的端口号，范围从0到1023
+例如：
+        80端口分配给HTTP服务
+        21端口分配给FTP服务
+        一般情况下，如果一个程序需要使用知名端口的需要有root权限
+
+#### 动态端口
+        动态端口的范围是从1024到65535
+        之所以称为动态端口，是因为它一般不固定分配某种服务，而是动态分配
+动态分配是指当一个系统进程或应用程序进程需要网络通信时，它向主机申请一个端口，主机从可用的端口号中分配一个供他使用。当这个进程关闭时，同时也就释放了所占用的端口号。
+
+小结：
+        端口有什么作用？在两台计算机通信时，只发IP定制是不够用的，因为同一台计算机上跑着多个网络程序。一个IP包来了之后，到底是交给浏览器还是QQ，就需要端口号来区分。每个网络程序都向操作系统申请唯一的端口号，这样，两个进程在两台计算机之间建立网络链接就需要各自的IP地址和各自的端口号。
+
+
+### Socket-套接字
+
+#### udp-套接字
+```Python
+from socket import *  #导入socket
+from threading import *  #导入threading
+
+udp = socket(AF_INET,SOCK_DGRAM) #创建套接字,基于UDP传输协议。相对于TCP比较快。AF_INET表示使用IPV4进行链接。如果使用IPV6则把参数修改为AF_INET6
+
+udp.bind(('',8080)) #绑定任意ip,和8080端口，如果不进行绑定，那么每创建一个套解字就会使用一个动态端口。
+
+sendip = input('输入接收方的IP：')
+sendport = int(input('输入接收方的端口：'))
+
+def sendinfo(): #定义发送函数
+    while True:
+        senddata = input('请输入发送的内容：')
+        udp.sendto(senddata.encode('utf-8'),(sendip,sendport)) #调用套解字的sendto方法，第一个参数为编码后的数据，第二个参数为接收方的IP和端口。
+
+def receiveinfo(): #定义接收函数
+    while True:
+        recvdata = udp.recvfrom(1024) #调用recvfrom方法进行数据接收，并且以元祖的方式返回，第一个参数是数据，第二个参数为IP和端口。与发送格式一致。
+        print(recvdata[1],recvdata[0].decode('utf-8')) #将接收到的数据进行打印，并将数据进行解码。
+
+def main():
+    ts = Thread(target=sendinfo) #创建一个线程运行发送函数。
+    tr = Thread(target=receiveinfo) #创建一个线程运行接收函数。
+
+    ts.start()
+    tr.start()
+
+    ts.join()
+    tr.join()
+
+if __name__ == '__main__':
+    main()
+
+# 注意：socket 套接字是用来再网络间通信的模块
 ```
 
 
@@ -597,6 +705,3 @@ t2.join()
 
 
 
-
-
-```
