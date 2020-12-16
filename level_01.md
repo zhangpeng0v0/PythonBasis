@@ -744,6 +744,7 @@ MAC(Medium/Media Access Control)地址，用来表示互联网上每一个站点
 第三次握手：客户端收到服务器的SYN＋ACK包,向服务器发送确认包ACK(ack=k+1),此包发送完毕,客户端和服务器进入ESTABLISHED状态,完成三次握手.
 完成三次握手,客户端与服务器开始传送数据
 
+![3次握手](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.png)
 
 
 ### 关闭连接（四次挥手）
@@ -752,9 +753,13 @@ MAC(Medium/Media Access Control)地址，用来表示互联网上每一个站点
 第三次挥手：服务端发送FIN+ACK包给客户端，服务端进入LAST_ACK状态。
 第四次挥手：客户端收到FIN+ACK包后，发送ACK包给服务端进行确认，客户端进入TIME_WAIT状态，在等待30秒（可修改）后进入CLOSED状态。服务端收到ACK包后进入CLOSED状态，关闭另一个单向通道。
 
+![四次挥手](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.png)
+
 
 
 ### TCP十种状态
+
+![TCP的十种状态](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/TCP%E5%8D%81%E7%A7%8D%E7%8A%B6%E6%80%81.png)
 
 
 CLOSED：表示关闭状态（初始状态）。
@@ -774,7 +779,7 @@ CLOSING:这种状态较特殊，属于一种较罕见的状态。正常情况下
 
 ### TCP的2MSL
 
-
+![TCP的2MSL](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/TCP%E7%9A%842MSL.png)
 
 
 2MSL即两倍的MSL，TCP的TIME_WAIT状态也称为2MSL等待状态，
@@ -787,16 +792,19 @@ CLOSING:这种状态较特殊，属于一种较罕见的状态。正常情况下
 
 ### 短链接
 
+![短连接](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/%E7%9F%AD%E9%93%BE%E6%8E%A5.png)
 
 
 ### ⻓链接
 
+![长连接](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/%E9%95%BF%E9%93%BE%E6%8E%A5.png)
 
 
 ### 常见的网络攻击
 
 ### DDOS攻击
 
+![TDDOS攻击](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/DDOS%E6%94%BB%E5%87%BB.png)
 
 
 
