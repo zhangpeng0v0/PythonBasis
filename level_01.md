@@ -512,7 +512,14 @@ t2.join()
 
 # 因为互联网协议包含了上百种协议标准，但是最重要的两个协议是TCP和IP协议，所以，大家把互联网的协议简称TCP/IP协议
 
+```
+![TCP\IP协议](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/TCP%5CIP%E5%8D%8F%E8%AE%AE.png)
 
+![TCP\IP模型与OSI模型对比01](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/TCP%5CIP%E6%A8%A1%E5%9E%8B%E4%B8%8EOSI%E6%A8%A1%E5%9E%8B%E5%AF%B9%E6%AF%9401.png)
+
+![TCP\IP模型与OSI模型对比02](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/TCP%5CIP%E6%A8%A1%E5%9E%8B%E4%B8%8EOSI%E6%A8%A1%E5%9E%8B%E5%AF%B9%E6%AF%9402.png)
+
+```
 
 
 
