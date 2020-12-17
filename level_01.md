@@ -872,7 +872,7 @@ Counter({'l':3, 'o':2, ' ':1, 'e':1, 'd':1, 'h':1, 'r':1, 'w':1 })
 JSON是一种非常好的数据序列化形式，被如今的各种API和web service大量的使用。使用python内置的json处理，可以使用JSON串具有一定的可读性，但当遇到大型数据时，它表现成一个很长的、连续的一行是，人的肉眼就很难看了。
 为了让JSON数据表现的更友好，我们可以使用indent参数来输出漂亮的JSON。当在控制台交互式编程或做日志时，这尤其有用：
 
-![JSON]()
+![JSON](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/json.png)
 
 同样，使用内置的pprint模块，也可以让其他任何东西打印输出的更漂亮
 
@@ -1053,9 +1053,9 @@ print("电话号码是 : ", num)
 下表列出了正则表达式模式语法中的特殊元素。如果你使用模式的同时提供了可选的标志参数，某些模式元素的含义会改变
 
 
-![正则01]()
+![正则01](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/re01.png)
 
-![正则02]()
+![正则02](https://github.com/zhangpeng0v0/PythonBasis/blob/main/img/re02.png)
 
 
 ## python高级之面向对象高级
